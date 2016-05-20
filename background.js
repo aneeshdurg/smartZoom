@@ -1,5 +1,7 @@
 // background.js
-
+chrome.runtime.onInstalled.addListener(function (object) {
+	chrome.runtime.openOptionsPage();
+});
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse){
 		

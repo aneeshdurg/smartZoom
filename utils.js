@@ -1,6 +1,7 @@
 var xs, xe, ys, ye;
-var blur, edges;
+var blur, threshCopy, thresholded;
 var width, height;
+var maxPts;
 function bgr2gray(data){
 	var len = data.length;
 	for(var i = 0; i<len; i+=4){
@@ -56,7 +57,8 @@ function EdgeDetect(data, thresh){
 function blobDetect(data, src){
 	var dir = [1, -1, width, -width, -width-1, -width+1, width+1, width-1];
 	var maxArea = -1;
-	var maxPts = [];
+	maxPts = [];
+	var numBlobs = 0;
 	for(var i = 0; i<src.length; i++){
 		var area = 0;
 		var pts = [];
@@ -64,6 +66,7 @@ function blobDetect(data, src){
 			var done = false;
 			var j = i;
 			var temp = new Array();
+			numBlobs++;
 			while(!done){
 				if(src[j]==0){
 					if(temp.length==0)
@@ -98,6 +101,17 @@ function blobDetect(data, src){
 				maxArea = area;
 				maxPts = pts;
 			}
+		}
+	}
+	return numBlobs, maxArea;
+}
+function drawDetected(data){
+	for(var i = ys; i<ye; i++){
+		for(var j = xs; j<xe; j++){
+			var k = i*width+j;
+			data[4*k] = threshCopy[k];
+			data[4*k+1] = threshCopy[k];
+			data[4*k+2] = threshCopy[k];
 		}
 	}
 	for(var i = 0; i<maxPts.length; i++){
@@ -148,22 +162,25 @@ function updateLimits(){
 function threshold(data, thresh, a, b){
 	counter = 0;
 	thresholded = new Array(data.length/4);
+	threshCopy = new Array(data.length/4);
 	updateLimits();
 	for(var i = ys; i<ye; i++){
 		for(var j = xs; j<xe; j++){
 			var k = i*4*width+4*j
 			if(data[k]>thresh){
-				data[k] = a;
-				data[k+1] = a;
-				data[k+2] = a;
+				thresholded[k/4] = a;
+				threshCopy[k/4] = a;
 			}		
 			else{
-				data[k] = b;
-				data[k+1] = b;
-				data[k+2] = b;
+				thresholded[k/4] = b;
+				threshCopy[k/4] = b;
 				counter++;
 			}	
 		}
 	}
+	var numBlobs, blobArea;
+	numBlobs, blobArea = blobDetect(data, thresholded);
+	if(numBlobs>40)
+		counter = blobArea
 	return counter;
 }

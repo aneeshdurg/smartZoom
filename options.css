@@ -1,0 +1,19 @@
+canvas {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+#thresh{
+	margin:auto;
+	width:220px;
+}
+#rl{
+	margin:auto;
+	width:340px;
+}
+#ud{
+	margin:auto;
+	width:370px;
+}

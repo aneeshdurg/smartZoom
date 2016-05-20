@@ -48,8 +48,8 @@ function draw(){
 			else
 				t = parseInt(data.t);
 		});
-		blurImg(frame.data, edgeT);
 		threshold(frame.data, t, 0, 255);
+		drawDetected(frame.data);
 		try{
 			context.putImageData(frame, 0, 0);
 		} catch(e){
@@ -60,14 +60,12 @@ function draw(){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-	document.getElementById('etp').onclick = function(){edgeT++;};
-	document.getElementById('etm').onclick = function(){edgeT--;};
 	document.getElementById('plus').onclick = function(){
-		t+=5;
+		t+=1;
 		chrome.storage.local.set({'t':t});
 	};
 	document.getElementById('minus').onclick = function(){
-		t-=5;
+		t-=1;
 		chrome.storage.local.set({'t':t});
 	};
 	document.getElementById('invert').onclick = function(){
@@ -78,6 +76,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	};
 	document.getElementById('onlyZoom').onclick = function(){
 		chrome.runtime.sendMessage({"onlyZoom":"true"});
+	};
+	document.getElementById('optionLink').onclick = function(){
+		chrome.runtime.openOptionsPage();
 	};
 	chrome.runtime.onMessage.addListener(
   		function(request, sender, sendResponse) {

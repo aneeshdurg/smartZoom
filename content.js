@@ -46,46 +46,51 @@ function startStream(stream){
 }
 
 function draw(){
-	var frame = readFrame(context);
-	if(frame){
-		bgr2gray(frame.data);
-		chrome.storage.local.get("t", function(data){
-			if(chrome.runtime.lastError)
-				t=70;
+	chrome.storage.local.get("enable", function(data){
+		enable = data.enable;
+	});	
+	if(enable){
+		var frame = readFrame(context);
+		if(frame){
+			bgr2gray(frame.data);
+			chrome.storage.local.get("t", function(data){
+				if(chrome.runtime.lastError)
+					t=70;
+				else
+					t = parseInt(data.t);
+			});
+			var w = threshold(frame.data, t, 0, 255);
+			drawDetected(frame.data);
+			var sensitivity = 5000;
+			w = Math.floor(w/sensitivity)*sensitivity;
+			
+			w-=(xe-xs)*(ye-ys)/3;
+			chrome.storage.local.get("onlyZoom", function(data){
+				onlyZoom = data.onlyZoom;
+			});	
+			if(onlyZoom&&w>0)
+				w = -1*w;	
+			w/=((xe-xs)*(ye-ys)/100);
+			chrome.storage.local.get("invert", function(data){
+				invert = data.invert;
+			});
+			if(!invert||onlyZoom)		
+				w = 100-w;
 			else
-				t = parseInt(data.t);
-		});
-		var w = threshold(frame.data, t, 0, 255);
-		var sensitivity = 5000;
-		w = Math.floor(w/sensitivity)*sensitivity;
-		
-		w-=(xe-xs)*(ye-ys)/3;
-		chrome.storage.local.get("onlyZoom", function(data){
-			onlyZoom = data.onlyZoom;
-		});	
-		if(onlyZoom&&w>0)
-			w = -1*w;
-
-		w/=((xe-xs)*(ye-ys)/100);
-		chrome.storage.local.get("invert", function(data){
-			invert = data.invert;
-		});
-		if(!invert||onlyZoom)		
-			w = 150-w;
-		else
-			w+=100;
-		w = Math.floor(w/10)*10;
-		if(enable)
+				w+=100;
+			w = Math.floor(w/10)*10;
+			
 			document.body.style.zoom = ""+w+"%";
-		else
-			document.body.style.zoom = "100%";
-		chrome.storage.local.set({"w":w});
-		try{
-			context.putImageData(frame, 0, 0);
-		} catch(e){
-			console.log(e);
+			chrome.storage.local.set({"w":w});
+			try{
+				context.putImageData(frame, 0, 0);
+			} catch(e){
+				console.log(e);
+			}
 		}
 	}
+	else
+		document.body.style.zoom = "100%";
 	requestAnimationFrame(draw);
 }
 
@@ -103,6 +108,8 @@ chrome.runtime.onMessage.addListener(
 		}
 		else if(request.enable){
 			enable = !enable;
+			chrome.storage.local.set({"enable":enable});
+			console.log("enable "+enable);
 		}
 	}
 );

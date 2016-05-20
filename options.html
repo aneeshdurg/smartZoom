@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Options</title>
+		<link rel="stylesheet" type="text/css" href="options.css">
 		<script src="utils.js"></script>
 		<script src="options.js"></script>
 	<head>
@@ -9,21 +10,43 @@
 	<video id="zoomOptionFeed" hidden></video>
 	<canvas id="zoomOptionDraw"></canvas>
 	<br>
-	<button id="plus">+</button>
-	<button id="minus">-</button>
+	<div id="optionsmain">
+	<div id="thresh">
+		<button id="plus">Threshold +</button>
+		<button id="minus">Threshold -</button>
+		<button id="auto">Auto</button>
+	</div>
 	<br>
-	<button id="xs+">xs+</button>
-	<button id="xs-">xs-</button>
-	<button id="xe+">xe+</button>
-	<button id="xe-">xe-</button>
 	<br>
-	<button id="ys+">ys+</button>
-	<button id="ys-">ys-</button>
-	<button id="ye+">ye+</button>
-	<button id="ye-">ye-</button>
+	<div id="rl">
+		<button id="xs+">Crop Left+</button>
+		<button id="xs-">Crop Left-</button>
+		<button id="xe-">Crop Right+</button>
+		<button id="xe+">Crop Right-</button>
+	</div>
 	<br>
+	<br>
+	<div id="ud">
+		<button id="ys+">Crop Upper+</button>
+		<button id="ys-">Crop Upper-</button>
+		<button id="ye-">Crop Lower+</button>
+		<button id="ye+">Crop Lower-</button>
+	</div>
+	<br>
+	</div>
+	<center><h1> Calibration </h1>
+	<p> The Threshold + and - buttons control the threshold values for detection. An ideal threshold value will highlight your entire sillouhette in blue.</p>
+	<p> Pressing auto finds the best threshold value for you! However, this is somewhat error prone and may require some fine tuning using the +/- buttons.</p>
+	<p> Using the crop buttons to adjust the area used for detection can lead to more accurate results.</p> 
+	<h1> Settings panel </h1>
+	<p> To readjust the threshold values without returning to the options page, use the icon next to the address bar.</p>
+	<p> The icon reveals a setting panel and a detected display, allowing you to adjust the threshold, invert the action of moving closer or further away, </p>
+	<p> enable an only zoom mode (which always zooms in, whether you lean in or out), or disable smartZoom.</p>	
+	</center>
+	<div hidden>
 	<p id="w"></p>
 	<p id="total"></p>
+	</div>
 	</body>
 </html>
 
