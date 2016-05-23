@@ -48,7 +48,7 @@ function draw(){
 		bgr2gray(frame.data);
 		if(autoThresh){
 			t = 70;
-			var ideal = (xe-xs)*(ye-ys)/3;
+			var ideal = (xe-xs)*(ye-ys)/5;
 			var lastw = threshold(frame.data, t, 0, 255);
 			while(autoThresh){
 				var delta;
@@ -62,7 +62,7 @@ function draw(){
 					break;
 				t+=delta;
 				console.log(t);
-				var currw = threshold(frame.data, t, 0, 255);
+				var currw = threshold(frame.data, t, 0, 255, et);
 				if(Math.abs(currw-ideal)>Math.abs(lastw-ideal)){
 					t-=delta;
 					break;

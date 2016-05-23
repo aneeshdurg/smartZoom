@@ -1,5 +1,6 @@
 var video, canvas, context;
 var t = 70;
+var sensitivity = 5000;
 var invert = false;
 var onlyZoom = false;
 var enable = true;
@@ -61,10 +62,9 @@ function draw(){
 			});
 			var w = threshold(frame.data, t, 0, 255);
 			drawDetected(frame.data);
-			var sensitivity = 5000;
 			w = Math.floor(w/sensitivity)*sensitivity;
 			
-			w-=(xe-xs)*(ye-ys)/3;
+			w-=(xe-xs)*(ye-ys)/5;
 			chrome.storage.local.get("onlyZoom", function(data){
 				onlyZoom = data.onlyZoom;
 			});	
@@ -110,6 +110,26 @@ chrome.runtime.onMessage.addListener(
 			enable = !enable;
 			chrome.storage.local.set({"enable":enable});
 			console.log("enable "+enable);
+		}
+		else if(request.sup){
+			if(sensitivity>=1000)
+				sensitivity+=1000;
+			else if(sensitivity>=100)
+				sensitivity+=100
+			else
+				sensitivity+=1;
+			chrome.storage.local.set({"sensitivity":sensitivity});
+			console.log("sensitivity "+sensitivity);
+		}
+		else if(request.sdown){
+			if(sensitivity>1000)
+				sensitivity-=1000;
+			else if(sensitivity>100)
+				sensitivity-=100
+			else
+				sensitivity-=1;
+			chrome.storage.local.set({"sensitivity":sensitivity});
+			console.log("sensitivity "+sensitivity);
 		}
 	}
 );

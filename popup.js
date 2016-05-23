@@ -77,6 +77,12 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.getElementById('onlyZoom').onclick = function(){
 		chrome.runtime.sendMessage({"onlyZoom":"true"});
 	};
+	document.getElementById('s+').onclick = function(){
+		chrome.runtime.sendMessage({"sup":"true"});
+	};
+	document.getElementById('s-').onclick = function(){
+		chrome.runtime.sendMessage({"sdown":"true"});
+	};
 	document.getElementById('optionLink').onclick = function(){
 		chrome.runtime.openOptionsPage();
 	};
