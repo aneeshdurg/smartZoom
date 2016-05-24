@@ -3,7 +3,7 @@
 
 	"name": "smartZoom",
 	"description":"Changes chrome's zoom value based off the user's distance from the camera. Requires the current tab to use https.",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"options_page": "options.html",	
 	"content_scripts": [
 		{
