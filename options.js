@@ -6,12 +6,12 @@ navigator.getUserMedia = ( navigator.getUserMedia ||
                        navigator.mozGetUserMedia ||
                        navigator.msGetUserMedia);
 function initialize(){
-	chrome.storage.local.get("t", function(data){
-			if(chrome.runtime.lastError)
-				t=70;
-			else
-				t = parseInt(data.t);
-		});	
+	//chrome.storage.local.get("t", function(data){
+	//		if(chrome.runtime.lastError)
+	//			t=70;
+	//	else
+	//			t = parseInt(data.t);
+	//	});	
 	video = document.getElementById("zoomOptionFeed");
 	canvas = document.getElementById("zoomOptionDraw");
 	context = canvas.getContext("2d");
@@ -19,11 +19,11 @@ function initialize(){
 	height = 180;
 	canvas.width = width;
 	canvas.height = height;
-	chrome.storage.local.set({"t":70});
-	chrome.storage.local.set({"xs":0});
-	chrome.storage.local.set({"ys":0});
-	chrome.storage.local.set({"xe":width});
-	chrome.storage.local.set({"ye":height});
+	//chrome.storage.local.set({"t":70});
+	//chrome.storage.local.set({"xs":0});
+	//chrome.storage.local.set({"ys":0});
+	//chrome.storage.local.set({"xe":width});
+	//chrome.storage.local.set({"ye":height});
 	var constraints = {
 		video: {
 			mandatory: {
@@ -70,15 +70,15 @@ function draw(){
 				lastw = currw;
 			}
 			autoThresh = false;
-			chrome.storage.local.set({'t':t});
+			//chrome.storage.local.set({'t':t});
 		}
 		if(!autoThresh){
-				chrome.storage.local.get("t", function(data){
+				/*chrome.storage.local.get("t", function(data){
 						if(chrome.runtime.lastError)
 							t=70;
 						else
 						t = parseInt(data.t);
-				});
+				});*/
 		}
 		var w = threshold(frame.data, t, 0, 255);
 		drawDetected(frame.data);
@@ -97,11 +97,11 @@ function draw(){
 document.addEventListener('DOMContentLoaded', function(){
 	document.getElementById('plus').onclick = function(){
 		t+=1;
-		chrome.storage.local.set({'t':t});
+		//chrome.storage.local.set({'t':t});
 	};
 	document.getElementById('minus').onclick = function(){
 		t-=1;
-		chrome.storage.local.set({'t':t});
+		//chrome.storage.local.set({'t':t});
 	};
 	document.getElementById('auto').onclick = function(){
 		autoThresh = !autoThresh;
@@ -111,28 +111,28 @@ document.addEventListener('DOMContentLoaded', function(){
 		if(xs>=xe){
 			xs = xe;
 		}
-		chrome.storage.local.set({'xs':xs});
+		//chrome.storage.local.set({'xs':xs});
 	};
 	document.getElementById('xs-').onclick = function(){
 		xs-=5;
 		if(xs<0){
 			xs = 0;
 		}
-		chrome.storage.local.set({"xs":xs});
+		//chrome.storage.local.set({"xs":xs});
 	};
 	document.getElementById('xe+').onclick = function(){
 		xe+=5;
 		if(xe>width){
 			xe = width;
 		}
-		chrome.storage.local.set({"xe":xe});
+		//chrome.storage.local.set({"xe":xe});
 	};
 	document.getElementById('xe-').onclick = function(){
 		xe-=5;
 		if(xe<xs){
 			xe = xs;
 		}
-		chrome.storage.local.set({"xe":xe});
+		//chrome.storage.local.set({"xe":xe});
 	};
 	document.getElementById('ys+').onclick = function(){
 		ys+=5;
@@ -146,21 +146,21 @@ document.addEventListener('DOMContentLoaded', function(){
 		if(ys<0){
 			ys = 0;
 		}
-		chrome.storage.local.set({"ys":ys});
+		//chrome.storage.local.set({"ys":ys});
 	};
 	document.getElementById('ye+').onclick = function(){
 		ye+=5;
 		if(ye>height){
 			ye = height;
 		}
-		chrome.storage.local.set({"ye":ye});
+		//chrome.storage.local.set({"ye":ye});
 	};
 	document.getElementById('ye-').onclick = function(){
 		ye-=5;
 		if(ye<ys){
 			ye = ys;
 		}
-		chrome.storage.local.set({"ye":ye});
+		//chrome.storage.local.set({"ye":ye});
 	};
 	initialize();
 });
