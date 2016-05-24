@@ -70,7 +70,7 @@ function draw(){
 			});	
 			if(onlyZoom&&w>0)
 				w = -1*w;	
-			w/=((xe-xs)*(ye-ys)/100);
+			w/=((xe-xs)*(ye-ys)/200);
 			chrome.storage.local.get("invert", function(data){
 				invert = data.invert;
 			});
@@ -111,7 +111,7 @@ chrome.runtime.onMessage.addListener(
 			chrome.storage.local.set({"enable":enable});
 			console.log("enable "+enable);
 		}
-		else if(request.sup){
+		else if(request.sdown){
 			if(sensitivity>=1000)
 				sensitivity+=1000;
 			else if(sensitivity>=100)
@@ -121,7 +121,7 @@ chrome.runtime.onMessage.addListener(
 			chrome.storage.local.set({"sensitivity":sensitivity});
 			console.log("sensitivity "+sensitivity);
 		}
-		else if(request.sdown){
+		else if(request.sup){
 			if(sensitivity>1000)
 				sensitivity-=1000;
 			else if(sensitivity>100)
